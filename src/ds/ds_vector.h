@@ -15,19 +15,23 @@ typedef struct ds_vector {
 #define DS_VECTOR_SIZE(v)     ((v)->size)
 #define DS_VECTOR_IS_EMPTY(v) (DS_VECTOR_SIZE(v) == 0)
 
-#define DS_VECTOR_FOREACH(v, z) \
-do {                            \
-    zval *x = v->buffer;        \
-    zval *y = x + v->size;      \
-    for (; x < y; ++x) {        \
+#define DS_VECTOR_FOREACH(v, z)             \
+do {                                        \
+    ds_vector_t *_v = v;                    \
+                                            \
+    zval *x = _v->buffer;                   \
+    zval *y = _v->buffer + _v->size;        \
+    for (; x < y; ++x) {                    \
         z = x;
 
-#define DS_VECTOR_FOREACH_REVERSED(v, z) \
-do {                                     \
-    zval *y = v->buffer;                 \
-    zval *x = y + v->size - 1;           \
-    for (; x != y; --x) {                \
-        z = x;
+#define DS_VECTOR_FOREACH_REVERSED(v, z)    \
+do {                                        \
+    ds_vector_t *_v = v;                    \
+                                            \
+    zval *x = _v->buffer;                   \
+    zval *y = _v->buffer + _v->size - 1;    \
+    for (; x <= y; --y) {                   \
+        z = y;
 
 #define DS_VECTOR_FOREACH_END() \
     } \
